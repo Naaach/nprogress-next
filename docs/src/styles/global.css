@@ -36,6 +36,18 @@ html[data-theme="dark"] {
 html { box-sizing: border-box; scroll-behavior: smooth; }
 *, *::before, *::after { box-sizing: inherit; }
 
+/*
+ * Dogfooding: the docs site themes the real nprogress-next bar through its
+ * public CSS variables. `html[data-theme]` outranks the core's injected
+ * `:root` block regardless of stylesheet order, so the docs keep their accent
+ * colour and a slightly thicker bar.
+ */
+html[data-theme] {
+  --np-color: var(--accent);
+  --np-height: 3px;
+  --np-z: 2000;
+}
+
 body {
   margin: 0;
   font-family: var(--font-sans);

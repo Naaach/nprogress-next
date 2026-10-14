@@ -89,11 +89,17 @@ export default defineConfig([
   {
     // Named `nprogress-next` so the artifact is exactly
     // `dist/nprogress-next.global.js` — the path `unpkg`/`jsdelivr` advertise.
+    //
+    // NOTE: `globalName` is deliberately NOT set. Setting it makes the IIFE
+    // assign the whole module namespace (`{ default, … }`) to the global,
+    // which overwrites the `globalThis.NProgressNext = facade` performed inside
+    // `src/global.ts`. That left CDN users with `NProgressNext.configure is not
+    // a function` — they had to reach through `NProgressNext.default`. The
+    // manual assignment is the single source of truth for the global.
     entry: { "nprogress-next": resolve(pkgRoot, "src/global.ts") },
     outDir,
     tsconfig,
     format: ["iife"],
-    globalName: "NProgressNext",
     platform: "browser",
     target: "es2020",
     sourcemap: true,
