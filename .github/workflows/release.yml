@@ -32,7 +32,8 @@ on:
         default: main
 
 permissions:
-  contents: write # changeset publish creates and pushes version tags
+  contents: write # publish creates/pushes tags; createGithubReleases needs it
+  pull-requests: write # changesets/action may open the version PR
 
 jobs:
   release:
@@ -93,13 +94,25 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # Real publish: `changeset publish` rewrites `workspace:*` to the concrete
-      # version, publishes in dependency order (core before react/vue) and
-      # creates the git tags.
-      - name: Publish to npm
+      # Real publish, via changesets/action:
+      #  - runs `changeset publish`: rewrites `workspace:*` to concrete versions,
+      #    publishes in dependency order (core before react/vue) and creates the
+      #    git tags;
+      #  - with `createGithubReleases`, opens a GitHub Release per published
+      #    package using its changelog.
+      # With no pending changesets (the version PR is already merged) it goes
+      # straight to publishing; if changesets were pending it would open a
+      # version PR instead, which is harmless.
+      - name: Publish & create GitHub Releases
         if: ${{ !inputs.dry_run }}
-        run: pnpm changeset publish
+        uses: changesets/action@v1
+        with:
+          version: pnpm changeset version
+          publish: pnpm changeset publish
+          createGithubReleases: true
+          title: "chore: version packages"
+          commit: "chore: version packages"
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
