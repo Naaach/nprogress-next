@@ -35,8 +35,8 @@ roadmap below for what's next.
 | 0     | Repo, name, license, base README                         | ✅ done        |
 | 1     | Core: TypeScript port + ESM/CJS/UMD build + types        | ✅ done        |
 | 2     | CSS variables + a11y + reduced-motion                    | ✅ done        |
-| 3     | React and Vue adapters                                   | 🚧 in progress |
-| 4     | Unit + visual tests, CI, Changesets                      | ⬜ planned     |
+| 3     | React and Vue adapters                                   | ✅ done        |
+| 4     | Unit + visual tests, CI, Changesets                      | 🚧 in progress |
 | 5     | Docs, examples (vanilla/React/Vue/Astro), publish to npm | ⬜ planned     |
 | 6     | Launch                                                   | ⬜ planned     |
 

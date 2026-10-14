@@ -1,0 +1,100 @@
+/*
+ * nprogress-next-vue — stylesheet for <ProgressBar />
+ *
+ * Only what CANNOT be inlined ships here.
+ *
+ * <ProgressBar /> sets its own geometry through inline `style` attributes —
+ * `position`/`top`/`left`/`width` on the bar, `position`/`top`/`right` on the
+ * spinner, and the `--np-color`/`--np-height`/`--np-z` custom properties on the
+ * root — so the component is fully functional with **zero** CSS imports. What is
+ * left are the purely decorative declarations that only make sense in a
+ * stylesheet: the peg's glow, the spinner's border and its keyframes.
+ *
+ * Theming
+ * -------
+ * Every value is driven by the same custom properties as the core package, so
+ * one `:root` block themes the framework adapters and the imperative build
+ * together:
+ *
+ *   --np-color          accent colour of the bar, the peg glow and the spinner
+ *   --np-height         thickness of the bar
+ *   --np-z              stacking order of the bar and the spinner
+ *   --np-peg-width      width of the glowing "peg" at the head of the bar
+ *   --np-spinner-size   diameter of the corner spinner
+ *
+ * The `--np-spinner-top` / `--np-spinner-right` offsets exist in the core
+ * stylesheet but are deliberately absent here: the spinner offset is an inline
+ * style on the component (it is geometry, not decoration). Override it with the
+ * `style` prop if you need it elsewhere.
+ *
+ * Every rule is namespaced under `.np-*` and targets nothing but this
+ * component's own markup, so importing the file twice — or alongside the core
+ * stylesheet — cannot collide with an app's styles.
+ */
+
+.np-root {
+  pointer-events: none;
+}
+
+.np-bar {
+  background: var(--np-color, #29d);
+}
+
+/* The glowing head of the bar. `rotate(3deg)` is what gives the bar its slight
+ * upward tilt, exactly as in the original NProgress. */
+.np-peg {
+  display: block;
+  position: absolute;
+  right: 0;
+  width: var(--np-peg-width, 100px);
+  height: 100%;
+  box-shadow: 0 0 10px var(--np-color, #29d), 0 0 5px var(--np-color, #29d);
+  opacity: 1;
+  transform: rotate(3deg) translate(0, -4px);
+}
+
+/* Two visible edges out of four: the rotating gap is what makes the corner
+ * spinner read as "spinning" rather than as a plain ring. */
+.np-spinner-icon {
+  width: var(--np-spinner-size, 18px);
+  height: var(--np-spinner-size, 18px);
+  box-sizing: border-box;
+  border: solid 2px transparent;
+  border-top-color: var(--np-color, #29d);
+  border-left-color: var(--np-color, #29d);
+  border-radius: 50%;
+  animation: np-next-spin 400ms linear infinite;
+}
+
+/*
+ * Namespaced (`np-next-spin`, not `np-spin`) so the adapter can be loaded
+ * alongside a consumer's own NProgress build without the two keyframes
+ * colliding.
+ */
+@keyframes np-next-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*
+ * Reduced motion.
+ *
+ * Simply dropping `animation` would freeze the spinner on the two-coloured arc
+ * it happened to be on, which reads as a half-drawn, broken widget. Filling in
+ * the remaining two borders turns that same element into a complete, dimmed
+ * ring: still unmistakably "busy", but completely static.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .np-spinner-icon {
+    animation: none;
+    border-top-color: var(--np-color, #29d);
+    border-right-color: var(--np-color, #29d);
+    border-bottom-color: var(--np-color, #29d);
+    border-left-color: var(--np-color, #29d);
+    opacity: 0.5;
+  }
+}

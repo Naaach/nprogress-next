@@ -1,0 +1,80 @@
+/*
+ * nprogress-next-react — optional companion stylesheet
+ * ---------------------------------------------------
+ * `<ProgressBar />` inlines everything that can be inlined, so it renders
+ * correctly with no stylesheet at all. This file carries only what inline
+ * styles genuinely cannot express: box shadows, border shorthands and
+ * `@keyframes`.
+ *
+ * Import it when you want the peg's glow and the spinner's animation:
+ *
+ *   import "nprogress-next-react/styles.css";
+ *
+ * Every selector is namespaced under `.np-*`, so importing it can never
+ * collide with the host app's styles — or with `nprogress-next/styles.css`,
+ * which targets `#nprogress`.
+ *
+ * Theming
+ * -------
+ * The three properties `<ProgressBar />` writes inline (`--np-color`,
+ * `--np-height`, `--np-z`) always win, because inline styles beat a
+ * stylesheet. The two below are only defaults: override them anywhere.
+ *
+ *   --np-peg-width      width of the glowing "peg" at the head of the bar
+ *   --np-spinner-size   diameter of the corner spinner
+ */
+
+.np-root .np-peg {
+  display: block;
+  position: absolute;
+  right: 0;
+  width: var(--np-peg-width, 100px);
+  height: 100%;
+  box-shadow: 0 0 10px var(--np-color, #29d), 0 0 5px var(--np-color, #29d);
+  opacity: 1;
+  transform: rotate(3deg) translate(0, -4px);
+}
+
+.np-root .np-spinner-icon {
+  width: var(--np-spinner-size, 18px);
+  height: var(--np-spinner-size, 18px);
+  box-sizing: border-box;
+  border: solid 2px transparent;
+  border-top-color: var(--np-color, #29d);
+  border-left-color: var(--np-color, #29d);
+  border-radius: 50%;
+  animation: np-spinner 400ms linear infinite;
+}
+
+@keyframes np-spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*
+ * Reduced motion.
+ *
+ * The bar's `transition` is a React inline style, so `!important` is the only
+ * way the stylesheet can win here.
+ *
+ * The spinner is not simply frozen: `animation: none` resets `transform` to
+ * `none`, which parks the arc at 0deg — a thin quarter-circle sitting in the
+ * top-left of its own box, which reads as a rendering glitch. Parking it at a
+ * fixed 45deg instead gives every reduced-motion user the same deliberate
+ * static indicator, dimmed so it reads as "busy" rather than "stuck".
+ */
+@media (prefers-reduced-motion: reduce) {
+  .np-root .np-bar {
+    transition: none !important;
+  }
+
+  .np-root .np-spinner-icon {
+    animation: none;
+    transform: rotate(45deg);
+    opacity: 0.55;
+  }
+}

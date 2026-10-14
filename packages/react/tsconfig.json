@@ -1,0 +1,13 @@
+{
+  // Browser-facing program: library sources plus their tests.
+  //
+  // `tsup.config.ts` is deliberately *not* part of this program — it is a
+  // Node-side build script, so pulling it in here would drag `@types/node`
+  // into a DOM-only program. It is type-checked by the root `tsconfig.json`.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["vitest/globals"]
+  },
+  "include": ["src", "test"]
+}
