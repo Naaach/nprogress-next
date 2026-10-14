@@ -73,6 +73,12 @@ jobs:
       - name: Pack (dry-run)
         run: pnpm -r pack --dry-run
 
+      # pnpm 12 attempts Trusted Publishing (OIDC) by default, so it prints a
+      # benign "Skipped OIDC: ... INCORRECT_PERMISSIONS" warning unless the
+      # workflow grants `id-token: write`. This workflow deliberately uses a
+      # token instead; auth comes from actions/setup-node above (registry-url +
+      # NODE_AUTH_TOKEN). Once the packages exist on npm, switching each to a
+      # Trusted Publisher removes the warning and the need for the secret.
       - name: Publish (dry run)
         if: ${{ inputs.dry_run }}
         run: pnpm -r --filter "./packages/*" publish --dry-run --no-git-checks
