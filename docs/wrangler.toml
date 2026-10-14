@@ -1,0 +1,10 @@
+name = "nprogress-next-docs"
+compatibility_date = "2024-12-01"
+pages_build_output_dir = "./dist"
+
+[build]
+command = "pnpm run build"
+cwd = "docs"
+
+[vars]
+NODE_VERSION = "24"

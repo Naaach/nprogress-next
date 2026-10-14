@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const entries = await getCollection('docs');
+const sorted = entries.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+---
+
+<Layout title="nprogress-next" description="A modern, dependency-free, multi-framework drop-in replacement for NProgress.">
+  <ul style="list-style: none; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+    {sorted.map(entry => (
+      <li style="padding: 1.5rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius);">
+        <h3 style="margin: 0 0 0.5rem;"><a href={`/${entry.slug}`}>{entry.data.title}</a></h3>
+        <p style="margin: 0; color: var(--muted); font-size: 0.9rem;">{entry.data.description}</p>
+      </li>
+    ))}
+  </ul>
+</Layout>

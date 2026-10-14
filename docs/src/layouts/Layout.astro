@@ -1,0 +1,82 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, import.meta.env.SITE || 'http://localhost:4321');
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} | nprogress-next</title>
+    <meta name="description" content={description || 'nprogress-next — A modern, dependency-free, multi-framework drop-in replacement for NProgress.'} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description || 'A modern, dependency-free, multi-framework drop-in replacement for NProgress.'} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description || 'A modern, dependency-free, multi-framework drop-in replacement for NProgress.'} />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="page">
+      <aside class="sidebar" aria-label="Navigation">
+        <nav>
+          <div class="sidebar-header">nprogress-next</div>
+          <ul class="sidebar-nav">
+            <li><a href="/">Introduction</a></li>
+            <li><a href="/installation">Installation</a></li>
+            <li>
+              <a href="/core-api">Core API</a>
+              <ul>
+                <li><a href="/core-api#singleton">Singleton (NProgress)</a></li>
+                <li><a href="/core-api#createprogress">createProgress()</a></li>
+                <li><a href="/core-api#options">Options</a></li>
+                <li><a href="/core-api#methods">Methods</a></li>
+                <li><a href="/core-api#events">Events (subscribe)</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="/react">React Adapter</a>
+              <ul>
+                <li><a href="/react#progressbar">ProgressBar</a></li>
+                <li><a href="/react#useprogress">useProgress()</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="/vue">Vue Adapter</a>
+              <ul>
+                <li><a href="/vue#progressbar">ProgressBar</a></li>
+                <li><a href="/vue#useprogress">useProgress()</a></li>
+                <li><a href="/vue#plugin">Plugin</a></li>
+              </ul>
+            </li>
+            <li><a href="/vanilla">Vanilla JS</a></li>
+            <li><a href="/astro">Astro</a></li>
+            <li><a href="/migration">Migration from NProgress</a></li>
+            <li><a href="/accessibility">Accessibility</a></li>
+            <li><a href="/theming">Theming</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <main class="main" id="main-content" role="main">
+        <header class="header">
+          <h1>{title}</h1>
+          {description && <p>{description}</p>}
+        </header>
+        <article class="content">
+          <slot />
+        </article>
+        <footer style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem;">
+          <p>nprogress-next — MIT licensed. <a href="https://github.com/Naaach/nprogress-next" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.npmjs.com/package/nprogress-next" target="_blank" rel="noopener">npm</a></p>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>
