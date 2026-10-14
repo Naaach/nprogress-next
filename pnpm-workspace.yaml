@@ -4,3 +4,7 @@ packages:
 
 allowBuilds:
   esbuild: true
+  # Astro's image service pulls sharp (astro -> sharp). pnpm 12 aborts the
+  # install on an ignored build script, so it must be approved explicitly —
+  # otherwise CI fails with ERR_PNPM_IGNORED_BUILDS.
+  sharp: true
