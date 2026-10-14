@@ -1,0 +1,111 @@
+/*
+ * nprogress-next — default stylesheet
+ *
+ * Theming API
+ * -----------
+ * Every visual detail is driven by a custom property. Override any of them on
+ * `:root`, or on any element that contains `#nprogress`, to restyle the bar
+ * without forking this file:
+ *
+ *   --np-color          accent colour of the bar, the peg glow and the spinner
+ *   --np-height         thickness of the bar
+ *   --np-z              stacking order of the bar and the spinner
+ *   --np-peg-width      width of the glowing "peg" at the head of the bar
+ *   --np-spinner-size   diameter of the corner spinner
+ *   --np-spinner-top    offset of the spinner from the top of the viewport
+ *   --np-spinner-right  offset of the spinner from the right of the viewport
+ *
+ * Compatibility
+ * -------------
+ * The container id (`#nprogress`) and the class names (`.bar`, `.peg`,
+ * `.spinner`, `.spinner-icon`, `.nprogress-custom-parent`) deliberately match
+ * the original NProgress so existing overrides and custom templates keep
+ * working. The default template also carries `role` attributes for
+ * accessibility, but these rules key off the classes so hand-written markup
+ * behaves predictably.
+ */
+
+:root {
+  --np-color: #29d;
+  --np-height: 2px;
+  --np-z: 1031;
+  --np-peg-width: 100px;
+  --np-spinner-size: 18px;
+  --np-spinner-top: 15px;
+  --np-spinner-right: 15px;
+}
+
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: var(--np-color);
+  position: fixed;
+  z-index: var(--np-z);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--np-height);
+}
+
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0;
+  width: var(--np-peg-width);
+  height: 100%;
+  box-shadow: 0 0 10px var(--np-color), 0 0 5px var(--np-color);
+  opacity: 1;
+  transform: rotate(3deg) translate(0, -4px);
+}
+
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: var(--np-z);
+  top: var(--np-spinner-top);
+  right: var(--np-spinner-right);
+}
+
+#nprogress .spinner-icon {
+  width: var(--np-spinner-size);
+  height: var(--np-spinner-size);
+  box-sizing: border-box;
+  border: solid 2px transparent;
+  border-top-color: var(--np-color);
+  border-left-color: var(--np-color);
+  border-radius: 50%;
+  animation: np-spinner 400ms linear infinite;
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .bar,
+.nprogress-custom-parent #nprogress .spinner {
+  position: absolute;
+}
+
+@keyframes np-spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*
+ * Reduced motion: dropping the animation outright (rather than freezing it
+ * mid-spin) would leave a half-drawn circle that reads as a broken widget.
+ * A dimmed, static arc still says "busy" without any movement.
+ */
+@media (prefers-reduced-motion: reduce) {
+  #nprogress .spinner-icon {
+    animation: none;
+    opacity: 0.55;
+  }
+}

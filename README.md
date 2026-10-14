@@ -17,7 +17,7 @@ NProgress.done()
 ## Why
 
 - **Same API.** `start` / `done` / `set` / `inc` / `configure` / `remove` + `.status`.
-- **Zero dependencies.** Core stays tiny (< 2 KB gzip).
+- **Zero dependencies.** Core stays tiny (**2.6 KB gzip**, budget-gated in CI by `pnpm size`).
 - **TypeScript.** Written in TS, shipped with first-class types.
 - **ESM + CJS + UMD.** Works everywhere, SSR-safe (Next / Nuxt / Astro).
 - **Multi-framework.** Core engine plus official adapters: React and Vue.
@@ -30,12 +30,12 @@ NProgress.done()
 🚧 **Early development.** This repository is at the scaffolding stage — see the
 roadmap below for what's next.
 
-| Phase | Scope                                                    | Status         |
+| Fase | Scope                                                    | Status         |
 | ----- | -------------------------------------------------------- | -------------- |
 | 0     | Repo, name, license, base README                         | ✅ done        |
-| 1     | Core: TypeScript port + ESM/CJS build + types            | 🚧 in progress |
-| 2     | CSS variables + a11y + reduced-motion                    | ⬜ planned     |
-| 3     | React and Vue adapters                                   | ⬜ planned     |
+| 1     | Core: TypeScript port + ESM/CJS/UMD build + types        | ✅ done        |
+| 2     | CSS variables + a11y + reduced-motion                    | ✅ done        |
+| 3     | React and Vue adapters                                   | 🚧 in progress |
 | 4     | Unit + visual tests, CI, Changesets                      | ⬜ planned     |
 | 5     | Docs, examples (vanilla/React/Vue/Astro), publish to npm | ⬜ planned     |
 | 6     | Launch                                                   | ⬜ planned     |

@@ -1,8 +1,16 @@
 {
+  // Solution root. It owns the shared compiler options (via `tsconfig.base.json`
+  // and the per-package configs that extend it) and additionally type-checks
+  // the Node-side tooling configs at the workspace root and inside packages.
+  //
+  // The `include`/`exclude` pair is load-bearing: without it `tsc` would walk
+  // `**/*` and happily compile the generated `packages/core/dist/*.d.ts`
+  // build output, which silently drags stale declarations into every check.
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "types": ["node"]
   },
-  "files": [],
-  "include": []
+  "include": ["*.config.ts", "packages/*/*.config.ts"],
+  "exclude": ["**/node_modules", "**/dist"]
 }

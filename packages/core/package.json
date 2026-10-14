@@ -1,0 +1,76 @@
+{
+  "name": "nprogress-next",
+  "version": "0.1.0",
+  "description": "Slim progress bars. A modern, dependency-free, TypeScript-first, drop-in replacement for NProgress.",
+  "keywords": [
+    "nprogress",
+    "progress",
+    "progressbar",
+    "progress-bar",
+    "loading",
+    "loading-bar",
+    "topbar",
+    "typescript",
+    "react",
+    "vue"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "author": "nprogress-next contributors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Naaach/nprogress-next.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/Naaach/nprogress-next#readme",
+  "bugs": {
+    "url": "https://github.com/Naaach/nprogress-next/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": [
+    "**/*.css",
+    "./dist/nprogress-next.global.js"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/nprogress-next.global.js",
+  "jsdelivr": "./dist/nprogress-next.global.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      },
+      "default": "./dist/index.js"
+    },
+    "./global": "./dist/nprogress-next.global.js",
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "build": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\" && tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
