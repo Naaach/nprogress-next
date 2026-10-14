@@ -4,10 +4,12 @@ import { styles } from "./styles";
 /**
  * Browser global entry (`<script>` tag).
  *
- * Exposes `window.NProgressNext` as a thin facade that forwards every method of
+ * Exposes `window.NProgressNext` as a thin facade that forwards every member of
  * the shared singleton, so CDN users can write `NProgressNext.start()` exactly
  * like the original `NProgress.start()`, while the named helpers stay available
- * as properties.
+ * as properties. Every public member of `ProgressInstance` is forwarded —
+ * including `getPositioningCSS()` and `subscribe()`, which are easy to forget
+ * and impossible to reach if they only exist on the module export.
  *
  * The shared singleton is deliberately *not* mutated: `Object.assign(NProgress, …)`
  * would leak the helpers onto the module-level default export for every importer.
@@ -27,8 +29,14 @@ const facade = {
   remove: () => NProgress.remove(),
   isStarted: () => NProgress.isStarted(),
   isRendered: () => NProgress.isRendered(),
+  getPositioningCSS: () => NProgress.getPositioningCSS(),
+  subscribe: (listener: (status: number | null) => void) => NProgress.subscribe(listener),
   get status() {
     return NProgress.status;
+  },
+  /** Writable for parity with 0.2.0's plain `NProgress.status` property. */
+  set status(value: number | null) {
+    NProgress.status = value;
   },
   settings: NProgress.settings,
   NProgress,

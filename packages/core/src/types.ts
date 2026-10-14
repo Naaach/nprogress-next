@@ -20,11 +20,27 @@ export interface ProgressSettings {
   trickleSpeed: number;
   /** Render the corner spinner. Default: `true`. */
   showSpinner: boolean;
-  /** Selector of the bar element inside the template. Default: `'.bar, [role="bar"]'`. */
+  /**
+   * Selector of the bar element inside the template.
+   *
+   * Comma-separated lists are resolved **in order** (not in document order), so
+   * the first selector that matches anywhere wins. Default:
+   * `'[role="bar"], .bar'`.
+   */
   barSelector: string;
-  /** Selector of the spinner element inside the template. Default: `'.spinner, [role="spinner"]'`. */
+  /**
+   * Selector of the spinner element inside the template.
+   *
+   * Comma-separated lists are resolved **in order**. Default:
+   * `'[role="spinner"], .spinner'`.
+   */
   spinnerSelector: string;
-  /** Where the bar is mounted. Default: `"body"`. */
+  /**
+   * Where the bar is mounted. Default: `"body"`.
+   *
+   * Must be an `Element` or a selector string `document.querySelector` can
+   * parse; anything else is rejected when it is configured, not mid-fade.
+   */
   parent: string | HTMLElement;
   /** Markup rendered inside the container. */
   template: string;
@@ -51,10 +67,23 @@ export type ProgressOptions = Partial<ProgressSettings>;
 export interface ProgressInstance {
   /** Library version (mirrors `NProgress.version` in nprogress 0.2.0). */
   readonly version: string;
-  /** Live settings object. Mutate through `configure()` for safe merges. */
+  /**
+   * Live settings object. Mutate through `configure()` for safe merges.
+   *
+   * Deliberately read-only *in the type only*: in nprogress 0.2.0 `NProgress.settings`
+   * is a module-level object, so `NProgress.settings = …` rebinds a local in
+   * the caller's scope and never affected the library. Exposing a setter here
+   * would advertise an override that 0.2.0 never honoured.
+   */
   readonly settings: ProgressSettings;
-  /** Current progress between `0` and `1`, or `null` when idle. */
-  readonly status: number | null;
+  /**
+   * Current progress between `0` and `1`, or `null` when idle.
+   *
+   * Writable for drop-in parity with 0.2.0, where `status` is a plain property
+   * and `NProgress.status = null` is the usual reset. Numbers are clamped to
+   * `0..1`; anything else resets to `null`.
+   */
+  status: number | null;
   /** Shows the bar and starts the trickle loop. */
   start(): ProgressInstance;
   /** Completes and hides the bar. Pass `true` to force it. */

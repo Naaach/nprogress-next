@@ -17,7 +17,7 @@ NProgress.done()
 ## Why
 
 - **Same API.** `start` / `done` / `set` / `inc` / `configure` / `remove` + `.status`.
-- **Zero dependencies.** Core stays tiny (**2.6 KB gzip**, budget-gated in CI by `pnpm size`).
+- **Zero dependencies.** Core stays tiny (**2.9 KB gzip**, budget-gated in CI by `pnpm size`).
 - **TypeScript.** Written in TS, shipped with first-class types.
 - **ESM + CJS + UMD.** Works everywhere, SSR-safe (Next / Nuxt / Astro).
 - **Multi-framework.** Core engine plus official adapters: React and Vue.

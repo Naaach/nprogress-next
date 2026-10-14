@@ -4,6 +4,20 @@ import type { ProgressInstance, ProgressOptions, ProgressSettings } from "./type
 /** Library version. Also exposed as `NProgress.version` (0.2.0 API). */
 export const version = "0.1.0";
 
+/*
+ * The default template keeps `role="bar"` / `role="spinner"` even though those
+ * are NOT valid ARIA roles (an axe/ARIA linter will flag them) — deliberately,
+ * for drop-in parity:
+ *
+ * - NProgress 0.2.0's custom templates are selected with `[role="bar"]` /
+ *   `[role="spinner"]`, so dropping the attributes would break every existing
+ *   template that ships the original markup.
+ * - The default `styles.css` keys off `.bar` / `.spinner` instead, so the
+ *   modern class-based style is unaffected.
+ * - Both wrappers are `aria-hidden="true"`, so the whole subtree is invisible
+ *   to assistive technology: the only thing exposed is the `role="progressbar"`
+ *   container with `aria-valuenow` and `aria-label`. See README.md.
+ */
 const DEFAULT_TEMPLATE =
   '<div class="bar" role="bar" aria-hidden="true"><div class="peg"></div></div>' +
   '<div class="spinner" role="spinner" aria-hidden="true"><div class="spinner-icon"></div></div>';
@@ -22,11 +36,13 @@ export const defaultSettings: ProgressSettings = {
   trickleRate: 0.02,
   trickleSpeed: 800,
   showSpinner: true,
-  // Comma selectors: the modern class-based default template *and* legacy
-  // 0.2.0 custom templates (which only carried `role="bar"` / `role="spinner"`)
-  // keep resolving.
-  barSelector: '.bar, [role="bar"]',
-  spinnerSelector: '.spinner, [role="spinner"]',
+  // The legacy 0.2.0 selectors come *first*. `queryFirst()` honours this order,
+  // so a nested template that carries both (e.g. `<div class="bar"><div
+  // role="bar"></div></div>`) still resolves the inner `[role="bar"]`, exactly
+  // like 0.2.0. Plain `querySelector('.bar, [role="bar"]')` would not: it
+  // returns the first match in DOCUMENT order, i.e. the outer `.bar`.
+  barSelector: '[role="bar"], .bar',
+  spinnerSelector: '[role="spinner"], .spinner',
   parent: "body",
   template: DEFAULT_TEMPLATE,
   id: "nprogress",
@@ -85,14 +101,16 @@ function hasClass(element: Element | null, name: string): boolean {
 /** Returns `true` only when the class was actually added by this call. */
 function addClass(element: Element | null, name: string): boolean {
   if (!element || hasClass(element, name)) return false;
-  element.className = (classNameOf(element) + name).substring(1);
+  element.className = (classNameOf(element) + name).trim();
   return true;
 }
 
 function removeClass(element: Element | null, name: string): void {
   if (!element || !hasClass(element, name)) return;
-  const list = classNameOf(element).replace(` ${name} `, " ");
-  element.className = list.substring(1, list.length - 1);
+  // `.trim()` (rather than 0.2.0's off-by-one `substring`) drops the padding
+  // that `classNameOf()` added, so removing the only class on an element does
+  // not leave a junk `class=" "` behind on `<html>`.
+  element.className = classNameOf(element).replace(` ${name} `, " ").trim();
 }
 
 function removeElement(element: Element | null): void {
@@ -144,6 +162,51 @@ function createQueue(): (task: QueueTask) => void {
   };
 }
 
+/**
+ * Runs each comma-separated selector in `selectorList` **in the given order**
+ * and returns the first hit.
+ *
+ * `querySelector('.a, .b')` resolves in DOCUMENT order, not selector order, so
+ * on a nested template such as `<div class="bar"><div role="bar"></div></div>`
+ * it returns the outer `.bar`. NProgress 0.2.0 only ever queried
+ * `[role="bar"]`, so it transformed the inner element; walking the list by hand
+ * reproduces that while still supporting the modern `.bar` class.
+ */
+function queryFirst(root: ParentNode, selectorList: string): HTMLElement | null {
+  const selectors = selectorList.split(",");
+  for (const selector of selectors) {
+    const trimmed = selector.trim();
+    if (!trimmed) continue;
+    const found = root.querySelector<HTMLElement>(trimmed);
+    if (found) return found;
+  }
+  return null;
+}
+
+/**
+ * Validates `settings.parent` up front.
+ *
+ * `parent` is resolved through `document.querySelector`, which throws a bare
+ * `DOMException` for anything it cannot parse — originally surfacing in the
+ * middle of a fade-out callback, long after the mistake was made. Rejecting it
+ * when it is configured turns that into an immediate, self-explanatory error.
+ * Skipped during SSR, where there is no document to parse against.
+ */
+function assertValidParent(parent: unknown): void {
+  if (isElement(parent)) return;
+  if (typeof parent !== "string") {
+    throw new TypeError('nprogress-next: "parent" must be an Element or a CSS selector string.');
+  }
+  if (typeof document === "undefined") return;
+  try {
+    document.querySelector(parent);
+  } catch (cause) {
+    throw new SyntaxError(`nprogress-next: "parent" is not a valid CSS selector: ${parent}`, {
+      cause,
+    });
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Document-level busy-state ownership                                 */
 /* ------------------------------------------------------------------ */
@@ -169,6 +232,10 @@ let busyClassAdded = false;
  */
 export function createProgress(options: ProgressOptions = {}): ProgressInstance {
   const settings: ProgressSettings = { ...defaultSettings, ...options };
+  // Validated once, on the effective settings, so a bad `parent` — passed here,
+  // merged in from the defaults, or reconfigured later — always fails fast.
+  assertValidParent(settings.parent);
+
   const queue = createQueue();
   const listeners = new Set<(status: number | null) => void>();
 
@@ -204,7 +271,15 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
   const getParent = (): HTMLElement | null => {
     if (!hasDocument()) return null;
     if (isElement(settings.parent)) return settings.parent;
-    return document.querySelector<HTMLElement>(settings.parent);
+    if (typeof settings.parent !== "string") return null;
+    try {
+      return document.querySelector<HTMLElement>(settings.parent);
+    } catch {
+      // `settings` is a live object, so `parent` can still be mutated behind
+      // `configure()`'s back. Degrade to "no parent" instead of throwing from
+      // an arbitrary callback.
+      return null;
+    }
   };
 
   const isRendered = (): boolean => hasDocument() && !!document.getElementById(settings.id);
@@ -264,6 +339,18 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
     busyClassAdded = false;
   };
 
+  /**
+   * Keeps the container's `aria-label` in step with `settings.ariaLabel`.
+   *
+   * Called from `set()` as well as from `render()`, so a `configure({ ariaLabel })`
+   * after `start()` actually reaches the live DOM instead of leaving the label
+   * rendered on first paint.
+   */
+  const syncAriaLabel = (progress: HTMLElement): void => {
+    if (settings.ariaLabel) progress.setAttribute("aria-label", settings.ariaLabel);
+    else progress.removeAttribute("aria-label");
+  };
+
   const render = (fromStart = false): HTMLElement | null => {
     if (!hasDocument()) return null;
 
@@ -280,10 +367,10 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
     progress.setAttribute("aria-valuemin", "0");
     progress.setAttribute("aria-valuemax", "1");
     progress.setAttribute("aria-valuenow", String(status ?? 0));
-    if (settings.ariaLabel) progress.setAttribute("aria-label", settings.ariaLabel);
+    syncAriaLabel(progress);
     progress.innerHTML = settings.template;
 
-    const bar = progress.querySelector<HTMLElement>(settings.barSelector);
+    const bar = queryFirst(progress, settings.barSelector);
     const parent = getParent() ?? document.body;
 
     if (bar) {
@@ -296,7 +383,7 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
     }
 
     if (!settings.showSpinner) {
-      removeElement(progress.querySelector(settings.spinnerSelector));
+      removeElement(queryFirst(progress, settings.spinnerSelector));
     }
 
     if (parent !== document.body) addClass(parent, "nprogress-custom-parent");
@@ -305,12 +392,33 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
     return progress;
   };
 
+  /**
+   * Detaches `progress` — and only that exact node.
+   *
+   * Takes the element explicitly instead of re-resolving `#id`, so a fade timer
+   * queued by a previous instance cannot delete the DOM of whatever now owns
+   * that id. The `getElementById(...) === progress` check is the second line of
+   * defence for the same race.
+   *
+   * The custom-parent marker is cleared through the container's own
+   * `parentNode`, which is exactly the node `render()` marked — so this never
+   * has to resolve (and can never choke on) `settings.parent`.
+   */
+  const unmount = (progress: Element | null): void => {
+    if (!progress) return;
+    const parent = progress.parentNode;
+    if (parent && isElement(parent)) removeClass(parent, "nprogress-custom-parent");
+    if (document.getElementById(settings.id) === progress) removeElement(progress);
+  };
+
   const remove = (): void => {
     if (!hasDocument()) return;
-    const parent = getParent();
+    // Released *first*: the busy refcount is module state shared with every
+    // other instance, so a leak here would strand `<html aria-busy="true">` for
+    // all of them. Everything below is exception-safe by construction —
+    // `unmount()` touches only real elements and a node that is genuinely ours.
     releaseDocumentBusy();
-    if (parent) removeClass(parent, "nprogress-custom-parent");
-    removeElement(document.getElementById(settings.id));
+    unmount(document.getElementById(settings.id));
   };
 
   const set = (n: number): ProgressInstance => {
@@ -328,10 +436,11 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
     if (!progress) return api;
 
     progress.setAttribute("aria-valuenow", String(value));
+    syncAriaLabel(progress);
 
     const ms = speed();
     const ease = settings.easing;
-    const bar = progress.querySelector<HTMLElement>(settings.barSelector);
+    const bar = queryFirst(progress, settings.barSelector);
 
     // Force a repaint so the transition starts from the current position.
     void progress.offsetWidth;
@@ -355,7 +464,10 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
         setTimeout(() => {
           applyStyles(progress, { transition: `all ${ms}ms linear`, opacity: 0 });
           setTimeout(() => {
-            remove();
+            // The captured element, never a fresh `#id` lookup: by the time
+            // this fires another instance may already own that id.
+            unmount(progress);
+            releaseDocumentBusy();
             next();
           }, ms);
         }, ms);
@@ -375,7 +487,11 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
     const work = (): void => {
       setTimeout(() => {
         if (!hasDocument() || !status) return;
-        inc();
+        // `trickle()`, not `inc()`: 0.2.0's loop advances by at most
+        // `trickleRate` per tick, while `inc()` moves a random fraction of the
+        // *remaining* distance and would race the bar to ~80% in a handful of
+        // ticks, leaving `trickleRate` as dead config.
+        trickle();
         work();
       }, settings.trickleSpeed);
     };
@@ -412,6 +528,7 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
       if (!Object.prototype.hasOwnProperty.call(options, key)) continue;
       const value = options[key as keyof ProgressOptions];
       if (value !== undefined) {
+        if (key === "parent") assertValidParent(value);
         (settings as unknown as Record<string, unknown>)[key] = value;
       }
     }
@@ -439,7 +556,7 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
     return api;
   };
 
-  const subscribe = (listener: (status: number | null) => void): (() => void) => {
+  const subscribe = (listener: (status: number | null) => void): () => void => {
     listeners.add(listener);
     return () => listeners.delete(listener);
   };
@@ -449,6 +566,21 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
     version,
     get status() {
       return status;
+    },
+    /**
+     * `status` is a plain writable property in 0.2.0, and
+     * `NProgress.status = null` is the documented reset idiom. A getter-only
+     * accessor would throw `TypeError: Attempted to assign to readonly
+     * property` in every ESM/strict consumer, so the setter is part of the
+     * drop-in surface: numbers are clamped to `0..1`, anything else resets to
+     * `null`, and subscribers are notified on a real change.
+     */
+    set status(value: number | null) {
+      const next =
+        typeof value === "number" && Number.isFinite(value) ? clamp(value, 0, 1) : null;
+      if (next === status) return;
+      status = next;
+      emit();
     },
     start,
     done,
