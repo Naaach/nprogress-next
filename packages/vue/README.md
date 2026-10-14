@@ -9,6 +9,8 @@ bar logic is not re-implemented here — it is
 so the adapter inherits its semantics, its accessible markup and its settings
 object verbatim.
 
+📖 **Docs:** <https://nprogress-next.nachodiaz.es>
+
 ## Install
 
 ```sh

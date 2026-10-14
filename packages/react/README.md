@@ -6,6 +6,8 @@
 The core (`nprogress-next`) owns the engine: settings, the trickle loop, the
 fade-out, SSR guards. This package owns the React shape of it, and nothing else.
 
+📖 **Docs:** <https://nprogress-next.nachodiaz.es>
+
 ## Install
 
 ```sh

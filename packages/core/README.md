@@ -189,6 +189,7 @@ a render in Next.js, Nuxt or Astro will not pin the event loop open. Call
 **≈ 3 kB gzipped** for the ESM bundle, default stylesheet included, with zero
 runtime dependencies. Budget-gated in CI by `pnpm size`.
 
+[![docs](https://img.shields.io/badge/docs-nprogress--next.nachodiaz.es-blue?style=flat-square)](https://nprogress-next.nachodiaz.es)
 [![gzip size](https://img.shields.io/endpoint?url=https%3A%2F%2Fnprogress-next.nachodiaz.es%2Fbadges%2Fsize.json&style=flat-square)](https://bundlephobia.com/package/nprogress-next@0.1.0)
 [![dependencies](https://img.shields.io/endpoint?url=https%3A%2F%2Fnprogress-next.nachodiaz.es%2Fbadges%2Fdeps.json&style=flat-square)](https://bundlephobia.com/package/nprogress-next@0.1.0)
 
@@ -199,4 +200,5 @@ runtime dependencies. Budget-gated in CI by `pnpm size`.
 Copyright (c) 2013-2014 Rico Sta. Cruz (original NProgress)
 Copyright (c) 2026 Nacho Diaz Perez (nprogress-next)
 
-Docs and source: <https://github.com/Naaach/nprogress-next>
+Docs: <https://nprogress-next.nachodiaz.es>
+Source: <https://github.com/Naaach/nprogress-next>

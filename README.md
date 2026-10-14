@@ -1,5 +1,6 @@
 # nprogress-next
 
+[![docs](https://img.shields.io/badge/docs-nprogress--next.nachodiaz.es-blue?style=flat-square)](https://nprogress-next.nachodiaz.es)
 [![gzip size](https://img.shields.io/endpoint?url=https%3A%2F%2Fnprogress-next.nachodiaz.es%2Fbadges%2Fsize.json&style=flat-square)](https://bundlephobia.com/package/nprogress-next@0.1.0)
 [![dependencies](https://img.shields.io/endpoint?url=https%3A%2F%2Fnprogress-next.nachodiaz.es%2Fbadges%2Fdeps.json&style=flat-square)](https://bundlephobia.com/package/nprogress-next@0.1.0)
 [![CI](https://github.com/Naaach/nprogress-next/actions/workflows/ci.yml/badge.svg?branch=main&style=flat-square)](https://github.com/Naaach/nprogress-next/actions/workflows/ci.yml)
