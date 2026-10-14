@@ -1,6 +1,6 @@
 {
   "name": "nprogress-next-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React components and hooks for nprogress-next — a controlled, inline-styled <ProgressBar /> and a useProgress() hook.",
   "keywords": [
     "nprogress",

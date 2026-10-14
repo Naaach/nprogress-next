@@ -1,6 +1,6 @@
 {
   "name": "nprogress-next",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Slim progress bars. A modern, dependency-free, TypeScript-first, drop-in replacement for NProgress.",
   "keywords": [
     "nprogress",
