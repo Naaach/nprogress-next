@@ -7,10 +7,17 @@ name: Release to npm
 # `dry_run` defaults to true, so the first runs only package and validate the
 # tarballs. Uncheck it (or `-f dry_run=false`) to publish for real.
 #
-# Requires the repo secret `NPM_TOKEN` (an npm "Automation" token). It is
-# injected by actions/setup-node below (registry-url + NODE_AUTH_TOKEN), written
-# to a user-level .npmrc outside the repo — pnpm 12 ignores ${ENV} placeholders
-# in the repository's own .npmrc.
+# Requires the repo secret `NPM_TOKEN`. It must be able to CREATE new packages
+# and to bypass 2FA (npm requires 2FA for publishing since 2026); a token
+# without those gets a 403 "You may not perform that action with these
+# credentials." on the first publish. Two valid options:
+#   - Classic token of type "Automation" (simplest), or
+#   - Granular token with "Bypass two-factor authentication" checked,
+#     Permissions = "Read and write (publish and stage)" (NOT stage only) and
+#     Select Packages = "All Packages" (specific packages cannot be created).
+# The token is injected by actions/setup-node below (registry-url +
+# NODE_AUTH_TOKEN), written to a user-level .npmrc outside the repo — pnpm 12
+# ignores ${ENV} placeholders in the repository's own .npmrc.
 
 on:
   workflow_dispatch:
