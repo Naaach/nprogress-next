@@ -1,4 +1,6 @@
 import { fileURLToPath } from "node:url";
+import react from "@vitejs/plugin-react";
+import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vitest/config";
 
 /**
@@ -11,6 +13,17 @@ import { defineConfig } from "vitest/config";
 const coreSrc = fileURLToPath(new URL("./packages/core/src/", import.meta.url));
 
 export default defineConfig({
+  /**
+   * `@vitejs/plugin-react` and `@vitejs/plugin-vue` are registered globally so
+   * `packages/react/test/**` and `packages/vue/test/**` are transformed without
+   * any per-package config. Both plugins are inert for files they do not own
+   * (the Vue plugin only claims `.vue`, the React plugin only enables JSX for
+   * `.jsx`/`.tsx`), so a single root config drives every package.
+   *
+   * `react`/`react-dom`/`vue` themselves are root devDependencies: the adapter
+   * packages only declare them as peers, so they are installed once here.
+   */
+  plugins: [react(), vue()],
   resolve: {
     // Order matters: the longer, more specific specifier has to win, otherwise
     // `nprogress-next/styles.css` would resolve to `nprogress-next` + `/styles.css`.
@@ -23,11 +36,9 @@ export default defineConfig({
   /**
    * NOTE: Vite 8 / Vitest 5 transpile `.tsx` through Oxc, not esbuild, so the
    * `esbuild: { jsx }` option is ignored (Vite warns about the conflict).
-   * Oxc's default JSX runtime is `automatic`, matching the root
-   * `tsconfig.json`, so adapter tests run without importing React.
-   *
-   * NOTE: the React and Vue vitest plugins are intentionally *not* installed
-   * yet — a later phase adds them together with the adapter packages.
+   * `@vitejs/plugin-react` configures that Oxc JSX transform itself
+   * (`oxc.jsx.runtime = "automatic"`), so no extra `oxc`/`esbuild` option is
+   * needed here — verified by `packages/react/test/*.test.tsx`.
    */
   test: {
     environment: "jsdom",
