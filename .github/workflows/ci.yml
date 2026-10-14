@@ -187,9 +187,19 @@ jobs:
         with:
           name: dist
           path: packages
+      - name: Check for changesets
+        id: changesets
+        run: |
+          if ls .changeset/*.md 1> /dev/null 2>&1; then
+            echo "has_changesets=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changesets=false" >> $GITHUB_OUTPUT
+          fi
       - name: Create version bump
+        if: steps.changesets.outputs.has_changesets == 'true'
         run: pnpm version
       - name: Publish to npm
+        if: steps.changesets.outputs.has_changesets == 'true'
         run: pnpm release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
