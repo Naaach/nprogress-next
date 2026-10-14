@@ -4,6 +4,7 @@ coverage/
 *.log
 .DS_Store
 .vite/
+.astro/
 *.tsbuildinfo
 .turbo/
 .vercel/
