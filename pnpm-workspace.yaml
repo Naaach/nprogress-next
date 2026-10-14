@@ -1,0 +1,9 @@
+packages:
+  - packages/*
+  - examples/*
+  - docs
+
+# pnpm >= 10 blocks lifecycle scripts by default; these are trusted to build.
+# (pnpm >= 12 uses "allowBuilds"; older versions used "onlyBuiltDependencies".)
+allowBuilds:
+  esbuild: true

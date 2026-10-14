@@ -1,0 +1,54 @@
+{
+  "name": "nprogress-next-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Monorepo for nprogress-next — a minimalist, dependency-free, multi-framework progress bar and drop-in replacement for NProgress.",
+  "keywords": [
+    "nprogress",
+    "progress",
+    "progress-bar",
+    "loading",
+    "typescript",
+    "react",
+    "vue"
+  ],
+  "license": "MIT",
+  "author": "Nacho Diaz Perez",
+  "homepage": "https://github.com/Naaach/nprogress-next#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Naaach/nprogress-next.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Naaach/nprogress-next/issues"
+  },
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "build": "pnpm --filter \"./packages/*\" -r build",
+    "dev": "pnpm --filter \"./packages/*\" -r --parallel dev",
+    "test": "pnpm --filter \"./packages/*\" -r test",
+    "test:watch": "pnpm --filter \"./packages/*\" -r test:watch",
+    "test:coverage": "pnpm --filter \"./packages/*\" -r test:coverage",
+    "typecheck": "pnpm --filter \"./packages/*\" -r typecheck",
+    "clean": "pnpm --filter \"./packages/*\" -r clean",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.3",
+    "@types/node": "^26.6.5",
+    "@vitest/coverage-v8": "^5.0.4",
+    "prettier": "^3.9.10",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.4"
+  }
+}

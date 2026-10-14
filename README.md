@@ -30,23 +30,23 @@ NProgress.done()
 🚧 **Early development.** This repository is at the scaffolding stage — see the
 roadmap below for what's next.
 
-| Phase | Scope | Status |
-|---|---|---|
-| 0 | Repo, name, license, base README | 🚧 in progress |
-| 1 | Core: TypeScript port + ESM/CJS build + types | ⬜ planned |
-| 2 | CSS variables + a11y + reduced-motion | ⬜ planned |
-| 3 | React and Vue adapters | ⬜ planned |
-| 4 | Unit + visual tests, CI, Changesets | ⬜ planned |
-| 5 | Docs, examples (vanilla/React/Vue/Astro), publish to npm | ⬜ planned |
-| 6 | Launch | ⬜ planned |
+| Phase | Scope                                                    | Status         |
+| ----- | -------------------------------------------------------- | -------------- |
+| 0     | Repo, name, license, base README                         | ✅ done        |
+| 1     | Core: TypeScript port + ESM/CJS build + types            | 🚧 in progress |
+| 2     | CSS variables + a11y + reduced-motion                    | ⬜ planned     |
+| 3     | React and Vue adapters                                   | ⬜ planned     |
+| 4     | Unit + visual tests, CI, Changesets                      | ⬜ planned     |
+| 5     | Docs, examples (vanilla/React/Vue/Astro), publish to npm | ⬜ planned     |
+| 6     | Launch                                                   | ⬜ planned     |
 
 ## Ecosystem (planned)
 
-| Package | Description |
-|---|---|
-| `nprogress-next` | Core engine (framework-agnostic) |
-| `nprogress-next-react` | React adapter (`<ProgressBar />`, `useProgress()`) |
-| `nprogress-next-vue` | Vue adapter (`<ProgressBar />`, `useProgress()`, plugin) |
+| Package                | Description                                              |
+| ---------------------- | -------------------------------------------------------- |
+| `nprogress-next`       | Core engine (framework-agnostic)                         |
+| `nprogress-next-react` | React adapter (`<ProgressBar />`, `useProgress()`)       |
+| `nprogress-next-vue`   | Vue adapter (`<ProgressBar />`, `useProgress()`, plugin) |
 
 ## Credit where it's due
 
