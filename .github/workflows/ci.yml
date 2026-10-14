@@ -189,5 +189,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    # Publishing is intentionally NOT part of CI. We will add a manual release
-    # workflow once the project is ready to launch and NPM_TOKEN is configured.
+    # Publishing lives in .github/workflows/release.yml and is triggered
+    # manually (workflow_dispatch). This job only keeps a "Version Packages"
+    # PR up to date; merging that PR is what stages a release.
