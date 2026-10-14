@@ -186,8 +186,11 @@ a render in Next.js, Nuxt or Astro will not pin the event loop open. Call
 
 ## Size
 
-**2.96 kB gzipped** for the ESM bundle (7,266 bytes raw), default stylesheet
-included, with zero runtime dependencies. Budget-gated in CI by `pnpm size`.
+**≈ 3 kB gzipped** for the ESM bundle, default stylesheet included, with zero
+runtime dependencies. Budget-gated in CI by `pnpm size`.
+
+[![gzip size](https://img.shields.io/endpoint?url=https%3A%2F%2Fnprogress-next.nachodiaz.es%2Fbadges%2Fsize.json&style=flat-square)](https://bundlephobia.com/package/nprogress-next@0.1.0)
+[![dependencies](https://img.shields.io/endpoint?url=https%3A%2F%2Fnprogress-next.nachodiaz.es%2Fbadges%2Fdeps.json&style=flat-square)](https://bundlephobia.com/package/nprogress-next@0.1.0)
 
 ## License
 

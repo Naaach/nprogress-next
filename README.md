@@ -1,5 +1,9 @@
 # nprogress-next
 
+[![gzip size](https://img.shields.io/endpoint?url=https%3A%2F%2Fnprogress-next.nachodiaz.es%2Fbadges%2Fsize.json&style=flat-square)](https://bundlephobia.com/package/nprogress-next@0.1.0)
+[![dependencies](https://img.shields.io/endpoint?url=https%3A%2F%2Fnprogress-next.nachodiaz.es%2Fbadges%2Fdeps.json&style=flat-square)](https://bundlephobia.com/package/nprogress-next@0.1.0)
+[![CI](https://github.com/Naaach/nprogress-next/actions/workflows/ci.yml/badge.svg?branch=main&style=flat-square)](https://github.com/Naaach/nprogress-next/actions/workflows/ci.yml)
+
 > **A drop-in replacement for [NProgress](https://github.com/rstacruz/nprogress)** — a minimalist, dependency-free, multi-framework progress bar for the top of the page.
 
 NProgress is used by millions of projects every month, but its last release
@@ -17,7 +21,7 @@ NProgress.done()
 ## Why
 
 - **Same API.** `start` / `done` / `set` / `inc` / `configure` / `remove` + `.status`.
-- **Zero dependencies.** Core stays tiny (**2.96 KB gzip**, budget-gated in CI by `pnpm size`).
+- **Zero dependencies.** Core stays tiny (**≈ 3 KB gzip**, budget-gated in CI by `pnpm size`).
 - **TypeScript.** Written in TS, shipped with first-class types.
 - **ESM + CJS + UMD.** Works everywhere, SSR-safe (Next / Nuxt / Astro).
 - **Multi-framework.** Core engine plus official adapters: React and Vue.
