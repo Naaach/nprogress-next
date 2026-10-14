@@ -4,8 +4,6 @@ description: "React components and hooks for nprogress-next."
 order: 3
 ---
 
-# React Adapter
-
 ## Installation
 
 ```bash

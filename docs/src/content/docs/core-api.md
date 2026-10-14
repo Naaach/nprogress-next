@@ -4,8 +4,6 @@ description: "Complete API reference for nprogress-next core."
 order: 2
 ---
 
-# Core API
-
 ## Import
 
 ```js

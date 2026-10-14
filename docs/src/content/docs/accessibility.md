@@ -4,8 +4,6 @@ description: "Accessibility features in nprogress-next."
 order: 8
 ---
 
-# Accessibility
-
 ## Built-in Accessibility
 
 nprogress-next follows WAI-ARIA Authoring Practices for `progressbar` pattern.

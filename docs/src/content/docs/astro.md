@@ -4,8 +4,6 @@ description: "Using nprogress-next with Astro."
 order: 6
 ---
 
-# Astro
-
 ## React Island (Recommended)
 
 Use the React adapter as a client-side island — zero JS on initial render, hydrates on interaction.

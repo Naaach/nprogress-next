@@ -4,8 +4,6 @@ description: "Vue 3 components, composable, and plugin for nprogress-next."
 order: 4
 ---
 
-# Vue Adapter
-
 ## Installation
 
 ```bash

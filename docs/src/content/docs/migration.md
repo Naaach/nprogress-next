@@ -4,8 +4,6 @@ description: "Drop-in replacement guide from NProgress to nprogress-next."
 order: 7
 ---
 
-# Migration from NProgress
-
 ## Overview
 
 **nprogress-next** is a drop-in replacement for **NProgress 0.2.0**. Most apps can migrate by changing the import only.

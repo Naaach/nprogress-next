@@ -4,8 +4,6 @@ description: "Customize nprogress-next appearance with CSS variables."
 order: 9
 ---
 
-# Theming
-
 ## CSS Variables
 
 All visual aspects are controlled via `--np-*` custom properties. Set them globally or per-instance.

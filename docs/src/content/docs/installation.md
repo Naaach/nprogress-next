@@ -4,8 +4,6 @@ description: "Install nprogress-next for your framework."
 order: 1
 ---
 
-# Installation
-
 ## Package Manager
 
 ### Core (required for all)

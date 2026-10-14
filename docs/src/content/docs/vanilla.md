@@ -4,8 +4,6 @@ description: "Using nprogress-next without a framework."
 order: 5
 ---
 
-# Vanilla JS
-
 ## CDN (Quick Start)
 
 Zero build step — open an HTML file and go.
