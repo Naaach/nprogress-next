@@ -159,7 +159,7 @@ rather build the bar yourself:
 ```js
 NProgress.set(0.4);
 myBar.style.cssText = NProgress.getPositioningCSS();
-// => width:100%;height:var(--nprogress-height, 2px);left:0;top:0;transform:translate3d(-60%,0,0)
+// => width:100%;height:var(--np-height, 2px);left:0;top:0;transform:translate3d(-60%,0,0)
 ```
 ## CDN
 
@@ -186,7 +186,7 @@ a render in Next.js, Nuxt or Astro will not pin the event loop open. Call
 
 ## Size
 
-**2.92 kB gzipped** for the ESM bundle (6,960 bytes raw), default stylesheet
+**2.96 kB gzipped** for the ESM bundle (7,266 bytes raw), default stylesheet
 included, with zero runtime dependencies. Budget-gated in CI by `pnpm size`.
 
 ## License

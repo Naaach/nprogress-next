@@ -112,7 +112,7 @@ export function ProgressBar({
       className={rootClass}
       role="progressbar"
       aria-valuemin={0}
-      aria-valuemax={1}
+      aria-valuemax={100}
       aria-valuenow={percent}
       aria-label={label === null ? undefined : label}
       style={rootStyle}

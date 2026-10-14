@@ -86,7 +86,7 @@ Use the UMD global directly in a script — no React needed.
 | Approach | Pros | Cons |
 |----------|------|------|
 | **React island** | Type-safe, reactive hooks, full React ecosystem | Adds React to bundle (~40 KB) |
-| **Vanilla CDN** | Zero deps, ~2.9 KB, works everywhere | Imperative API, no reactivity |
+| **Vanilla CDN** | Zero deps, ~2.96 KB, works everywhere | Imperative API, no reactivity |
 
 ## SSR Notes
 

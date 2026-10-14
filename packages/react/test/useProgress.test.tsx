@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, renderHook, screen } from "@testing-library/react";
 import type { ReactElement } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ProgressBar, useProgress } from "../src/index";
@@ -297,10 +297,33 @@ describe("useProgress() — teardown", () => {
 
     unmount();
 
-    expect(instance.settings.trickle).toBe(false);
+    expect(instance.settings.trickle).toBe(true);
     expect(instance.status).toBeNull();
     expect(instance.isRendered()).toBe(false);
-    vi.runAllTimers();
+    vi.runOnlyPendingTimers();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("preserves trickle settings through React StrictMode effect replay", () => {
+    vi.useFakeTimers();
+    const { result, unmount } = renderHook(
+      (options: { trickle: boolean; trickleSpeed: number }) => useProgress(options),
+      {
+        initialProps: { trickle: true, trickleSpeed: 50 },
+        reactStrictMode: true,
+      },
+    );
+    const instance = result.current.progress;
+
+    expect(instance.settings.trickle).toBe(true);
+    act(() => result.current.start());
+    expect(vi.getTimerCount()).toBeGreaterThan(0);
+
+    unmount();
+    expect(instance.settings.trickle).toBe(true);
+    expect(instance.status).toBeNull();
+    expect(instance.isRendered()).toBe(false);
+    vi.runOnlyPendingTimers();
     expect(vi.getTimerCount()).toBe(0);
   });
 });

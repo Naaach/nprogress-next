@@ -21,13 +21,31 @@ const pb = '<ProgressBar />';
       <a href="https://www.npmjs.com/package/nprogress-next" target="_blank" rel="noopener" class="btn">npm</a>
     </div>
     <div class="hero-meta">
-      <span>📦 <strong>2.9 KB</strong> gzipped</span>
+      <span>📦 <strong>2.96 KB</strong> gzipped</span>
       <span>⚡ Zero dependencies</span>
       <span>🎯 TypeScript</span>
       <span>♿ Accessible</span>
       <span>🌙 Reduced motion</span>
       <span>🔧 SSR-safe</span>
     </div>
+  </section>
+
+  <section class="home-section" id="demo">
+    <h2>Try the live progress bar</h2>
+    <p>
+      These controls run the actual <code>nprogress-next</code> core. The blue bar at the top
+      is live, and internal documentation links also trigger it.
+    </p>
+    <div class="demo-controls">
+      <button class="btn btn-primary" type="button" data-np-action="start">start()</button>
+      <button class="btn" type="button" data-np-action="set">set(0.4)</button>
+      <button class="btn" type="button" data-np-action="inc">inc()</button>
+      <button class="btn" type="button" data-np-action="done">done()</button>
+    </div>
+    <p class="demo-status">
+      <span>Current status</span>
+      <code data-np-status>idle</code>
+    </p>
   </section>
 
   <section class="home-section">
@@ -50,25 +68,6 @@ NProgress.start()
 // ...some async work...
 NProgress.done()</code></pre>
     </div>
-  </section>
-
-  <section class="home-section" id="demo">
-    <h2>Live demo</h2>
-    <p>
-      This page is running the real <code>nprogress-next</code> core right now — the bar at the
-      very top is the component itself, not a screenshot. It also runs automatically when you
-      click any internal link in the docs.
-    </p>
-    <div class="demo-controls">
-      <button class="btn btn-primary" type="button" data-np-action="start">start()</button>
-      <button class="btn" type="button" data-np-action="set">set(0.4)</button>
-      <button class="btn" type="button" data-np-action="inc">inc()</button>
-      <button class="btn" type="button" data-np-action="done">done()</button>
-    </div>
-    <p class="demo-status">
-      <span>status</span>
-      <code data-np-status>idle</code>
-    </p>
   </section>
 
   <script>
@@ -110,7 +109,7 @@ NProgress.done()</code></pre>
       </article>
       <article class="card">
         <h3>📦 Zero dependencies</h3>
-        <p>Core is <strong>2.9 KB gzipped</strong>, budget-gated in CI. Nothing else to install.</p>
+        <p>Core is <strong>2.96 KB gzipped</strong>, budget-gated in CI. Nothing else to install.</p>
       </article>
       <article class="card">
         <h3>🎯 TypeScript</h3>

@@ -35,9 +35,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build workspace packages
+        run: pnpm build
+
       - name: Build docs
         run: pnpm build:docs
-        working-directory: .
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1

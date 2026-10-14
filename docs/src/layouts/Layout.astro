@@ -9,7 +9,6 @@ const { title, description } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, import.meta.env.SITE || 'http://localhost:4321');
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const isHome = currentPath === '/';
-const pb = '<ProgressBar />';
 ---
 
 <!doctype html>

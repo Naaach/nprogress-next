@@ -13,7 +13,7 @@ const root = (progress = 0): string =>
   `style="--np-color: #29d; --np-height: 2px; --np-z: 1031;">`;
 
 const bar = (percent: number, speed = 200, easing = "linear"): string =>
-  `<div class="np-bar" style="position: fixed; top: 0px; left: 0px; width: 100%; ` +
+  `<div class="np-bar" style="position: fixed; top: 0px; left: 0px; width: 100%; background: var(--np-color, #29d); ` +
   `height: var(--np-height, 2px); z-index: var(--np-z); ` +
   `transform: translate3d(${percent}%,0,0); transition: all ${speed}ms ${easing};">` +
   `<div class="np-peg"></div></div>`;

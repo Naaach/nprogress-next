@@ -23,7 +23,7 @@ describe("<ProgressBar />", () => {
     expect(el.className).toBe("np-root");
     expect(el.getAttribute("role")).toBe("progressbar");
     expect(el.getAttribute("aria-valuemin")).toBe("0");
-    expect(el.getAttribute("aria-valuemax")).toBe("1");
+    expect(el.getAttribute("aria-valuemax")).toBe("100");
     expect(el.getAttribute("aria-valuenow")).toBe("40");
     expect(el.getAttribute("aria-label")).toBe("Loading");
     expect(el.children).toHaveLength(2);

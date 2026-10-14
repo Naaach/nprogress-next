@@ -97,6 +97,7 @@ export const ProgressBar = defineComponent({
               top: "0",
               left: "0",
               width: "100%",
+              background: "var(--np-color, #29d)",
               // Read back through the custom property so the `height` prop
               // (and any app-level `--np-height` override) stays in charge.
               height: "var(--np-height, 2px)",

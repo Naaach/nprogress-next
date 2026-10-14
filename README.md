@@ -17,7 +17,7 @@ NProgress.done()
 ## Why
 
 - **Same API.** `start` / `done` / `set` / `inc` / `configure` / `remove` + `.status`.
-- **Zero dependencies.** Core stays tiny (**2.9 KB gzip**, budget-gated in CI by `pnpm size`).
+- **Zero dependencies.** Core stays tiny (**2.96 KB gzip**, budget-gated in CI by `pnpm size`).
 - **TypeScript.** Written in TS, shipped with first-class types.
 - **ESM + CJS + UMD.** Works everywhere, SSR-safe (Next / Nuxt / Astro).
 - **Multi-framework.** Core engine plus official adapters: React and Vue.
@@ -64,7 +64,7 @@ NProgress.done()
 | `NProgress.status` | Same (now writable) |
 | `NProgress.settings` | Same (mutable) |
 | `NProgress.version` | Same |
-| `NProgress.getPositioningCSS()` | Same |
+| `NProgress.getPositioningCSS()` | Changed: returns a CSS declaration string, not a mode name |
 | `import 'nprogress/nprogress.css'` | `import 'nprogress-next/styles.css'` OR auto-injected |
 | `new NProgress()` | `import { createProgress } from 'nprogress-next'; const p = createProgress()` |
 | — | `NProgress.subscribe(fn)` (new) |

@@ -296,17 +296,22 @@ describe("useProgress() teardown", () => {
     expect(api.isStarted.value).toBe(false);
   });
 
-  it("removes the container and releases aria-busy on unmount", async () => {
-    const { api, wrapper } = barHost();
+  it("removes the container, clears busy state and stops trickling on unmount", async () => {
+    vi.useFakeTimers();
+    const { api, wrapper } = barHost({ trickle: true, trickleSpeed: 50 });
     api.start();
     await nextTick();
     expect(document.documentElement.getAttribute("aria-busy")).toBe("true");
+    expect(vi.getTimerCount()).toBeGreaterThan(0);
 
     wrapper.unmount();
-    // `onScopeDispose` only detaches the listener; the core container is the
-    // instance's own responsibility, which `afterEach`'s `settle()` performs.
-    settle(api.progress);
+    expect(api.progress.status).toBeNull();
     expect(container()).toBeNull();
     expect(document.documentElement.hasAttribute("aria-busy")).toBe(false);
+
+    // There may be one already-scheduled tick, but it must observe the cleared
+    // status and not reschedule itself into an unbounded chain.
+    vi.runOnlyPendingTimers();
+    expect(vi.getTimerCount()).toBe(0);
   });
 });

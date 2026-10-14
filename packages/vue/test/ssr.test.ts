@@ -55,7 +55,7 @@ describe("server-side rendering", () => {
     expect(html).toBe(
       `<div class="np-root" role="progressbar" aria-valuemin="0" aria-valuemax="100" ` +
         `aria-valuenow="42" aria-label="Loading" style="--np-color:#29d;--np-height:2px;--np-z:1031;">` +
-        `<div class="np-bar" style="position:fixed;top:0;left:0;width:100%;` +
+        `<div class="np-bar" style="position:fixed;top:0;left:0;width:100%;background:var(--np-color, #29d);` +
         `height:var(--np-height, 2px);z-index:var(--np-z);` +
         `transform:translate3d(-58%,0,0);transition:all 200ms linear;">` +
         `<div class="np-peg"></div></div>` +

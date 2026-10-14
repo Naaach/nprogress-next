@@ -35,11 +35,13 @@
   --np-spinner-right: 15px;
 }
 
-#nprogress {
+#nprogress,
+.nprogress-container {
   pointer-events: none;
 }
 
-#nprogress .bar {
+#nprogress .bar,
+.nprogress-container .bar {
   background: var(--np-color);
   position: fixed;
   z-index: var(--np-z);
@@ -49,7 +51,8 @@
   height: var(--np-height);
 }
 
-#nprogress .peg {
+#nprogress .peg,
+.nprogress-container .peg {
   display: block;
   position: absolute;
   right: 0;
@@ -60,7 +63,8 @@
   transform: rotate(3deg) translate(0, -4px);
 }
 
-#nprogress .spinner {
+#nprogress .spinner,
+.nprogress-container .spinner {
   display: block;
   position: fixed;
   z-index: var(--np-z);
@@ -68,7 +72,8 @@
   right: var(--np-spinner-right);
 }
 
-#nprogress .spinner-icon {
+#nprogress .spinner-icon,
+.nprogress-container .spinner-icon {
   width: var(--np-spinner-size);
   height: var(--np-spinner-size);
   box-sizing: border-box;
@@ -85,7 +90,9 @@
 }
 
 .nprogress-custom-parent #nprogress .bar,
-.nprogress-custom-parent #nprogress .spinner {
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent .nprogress-container .bar,
+.nprogress-custom-parent .nprogress-container .spinner {
   position: absolute;
 }
 
@@ -104,7 +111,8 @@
  * A dimmed, static arc still says "busy" without any movement.
  */
 @media (prefers-reduced-motion: reduce) {
-  #nprogress .spinner-icon {
+  #nprogress .spinner-icon,
+.nprogress-container .spinner-icon {
     animation: none;
     opacity: 0.55;
   }

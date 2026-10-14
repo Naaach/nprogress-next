@@ -156,7 +156,7 @@ jobs:
         run: pnpm -r pack --dry-run
 
   changesets:
-    name: Changesets
+    name: Changesets version PR
     runs-on: ubuntu-latest
     needs: [typecheck, test, size, pack]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -178,28 +178,16 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - name: Configure pnpm
-        run: pnpm config set verify-store-integrity false
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
+      - name: Create or update version PR
+        uses: changesets/action@v1
         with:
-          name: dist
-          path: packages
-      - name: Check for changesets
-        id: changesets
-        run: |
-          if ls .changeset/*.md 1> /dev/null 2>&1; then
-            echo "has_changesets=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_changesets=false" >> $GITHUB_OUTPUT
-          fi
-      - name: Create version bump
-        if: steps.changesets.outputs.has_changesets == 'true'
-        run: pnpm version
-      - name: Publish to npm
-        if: steps.changesets.outputs.has_changesets == 'true'
-        run: pnpm release
+          version: pnpm version
+          title: "chore: version packages"
+          commit: "chore: version packages"
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Publishing is intentionally NOT part of CI. We will add a manual release
+    # workflow once the project is ready to launch and NPM_TOKEN is configured.

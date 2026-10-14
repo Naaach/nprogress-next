@@ -150,7 +150,9 @@ export function useProgress(options?: ProgressOptions): UseProgressReturn {
        * in the order they were registered — so clearing `status` here cannot
        * reach a torn-down fiber.
        */
-      instance.configure({ trickle: false });
+      // Clearing status stops the core trickle loop. Do not mutate the
+      // configured option here: React StrictMode replays effect setup after
+      // cleanup, and a forced `trickle: false` would persist into that mount.
       instance.status = null;
       instance.remove();
     },

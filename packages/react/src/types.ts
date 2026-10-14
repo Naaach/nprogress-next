@@ -68,7 +68,7 @@ export interface ProgressBarProps {
   /** Extra classes appended to `"np-root"`. */
   className?: string;
   /** Inline styles merged over the generated CSS custom properties. */
-  style?: CSSProperties;
+  style?: CSSProperties & Record<`--${string}`, string | number | undefined>;
 }
 
 /** Convenience re-export so consumers do not need a second import. */

@@ -103,6 +103,10 @@ export function useProgress(options: ProgressOptions = {}): UseProgressReturn {
     onScopeDispose(() => {
       unsubscribe();
       stopWatchingOptions();
+      // This composable owns its isolated instance. Stop its trickle timer and
+      // remove its DOM/aria-busy state when the owning component scope ends.
+      progress.status = null;
+      progress.remove();
     });
   }
 

@@ -237,6 +237,14 @@ describe("createProgress", () => {
     expect(host.className).toContain("nprogress-custom-parent");
   });
 
+  it("keeps default stylesheet matching when a custom id is configured", () => {
+    const p = instance({ id: "custom-progress" });
+    p.start();
+
+    const root = document.getElementById("custom-progress");
+    expect(root?.classList.contains("nprogress-container")).toBe(true);
+  });
+
   it("notifies subscribers on status changes", () => {
     const p = instance();
     const spy = vi.fn();
@@ -826,7 +834,7 @@ describe("getPositioningCSS()", () => {
     p.set(0.5);
 
     expect(p.getPositioningCSS()).toBe(
-      "width:100%;height:var(--nprogress-height, 2px);left:0;top:0;transform:translate3d(-50%,0,0)",
+      "width:100%;height:var(--np-height, 2px);left:0;top:0;transform:translate3d(-50%,0,0)",
     );
   });
 
@@ -836,7 +844,7 @@ describe("getPositioningCSS()", () => {
     p.set(0.25);
 
     expect(p.getPositioningCSS()).toBe(
-      "width:100%;height:var(--nprogress-height, 2px);left:-75%;margin-left:75%;top:0",
+      "width:100%;height:var(--np-height, 2px);left:-75%;margin-left:75%;top:0",
     );
   });
 
@@ -846,7 +854,7 @@ describe("getPositioningCSS()", () => {
     p.set(0.25);
 
     expect(p.getPositioningCSS()).toBe(
-      "width:100%;height:var(--nprogress-height, 2px);left:-75%;top:0",
+      "width:100%;height:var(--np-height, 2px);left:-75%;top:0",
     );
   });
 

@@ -307,7 +307,7 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
   const getPositioningCSS = (): string =>
     serializeStyles({
       width: "100%",
-      height: "var(--nprogress-height, 2px)",
+      height: "var(--np-height, 2px)",
       ...positioningStyles(status ?? 0),
     });
 
@@ -363,6 +363,7 @@ export function createProgress(options: ProgressOptions = {}): ProgressInstance 
 
     const progress = document.createElement("div");
     progress.id = settings.id;
+    progress.className = "nprogress-container";
     progress.setAttribute("role", "progressbar");
     progress.setAttribute("aria-valuemin", "0");
     progress.setAttribute("aria-valuemax", "1");
