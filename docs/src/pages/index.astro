@@ -52,6 +52,55 @@ NProgress.done()</code></pre>
     </div>
   </section>
 
+  <section class="home-section" id="demo">
+    <h2>Live demo</h2>
+    <p>
+      This page is running the real <code>nprogress-next</code> core right now — the bar at the
+      very top is the component itself, not a screenshot. It also runs automatically when you
+      click any internal link in the docs.
+    </p>
+    <div class="demo-controls">
+      <button class="btn btn-primary" type="button" data-np-action="start">start()</button>
+      <button class="btn" type="button" data-np-action="set">set(0.4)</button>
+      <button class="btn" type="button" data-np-action="inc">inc()</button>
+      <button class="btn" type="button" data-np-action="done">done()</button>
+    </div>
+    <p class="demo-status">
+      <span>status</span>
+      <code data-np-status>idle</code>
+    </p>
+  </section>
+
+  <script>
+    import NProgress from 'nprogress-next';
+
+    const status = document.querySelector('[data-np-status]');
+    const renderStatus = (value: number | null) => {
+      if (status) status.textContent = value === null ? 'idle' : `${Math.round(value * 100)}%`;
+    };
+    renderStatus(NProgress.status);
+    NProgress.subscribe(renderStatus);
+
+    document.querySelectorAll<HTMLElement>('[data-np-action]').forEach((button) => {
+      button.addEventListener('click', () => {
+        switch (button.dataset.npAction) {
+          case 'start':
+            NProgress.start();
+            break;
+          case 'set':
+            NProgress.set(0.4);
+            break;
+          case 'inc':
+            NProgress.inc();
+            break;
+          case 'done':
+            NProgress.done();
+            break;
+        }
+      });
+    });
+  </script>
+
   <section class="home-section">
     <h2>Why nprogress-next?</h2>
     <div class="grid">

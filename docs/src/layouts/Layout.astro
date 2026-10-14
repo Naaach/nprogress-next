@@ -160,6 +160,24 @@ const pb = '<ProgressBar />';
       Top
     </a>
 
+    <script>
+      // Dogfooding: the docs site runs on the real nprogress-next core.
+      import NProgress from 'nprogress-next';
+
+      // Show the bar while navigating between internal pages.
+      document.addEventListener('click', (event) => {
+        const target = event.target as HTMLElement | null;
+        const anchor = target?.closest('a');
+        if (!anchor || anchor.target === '_blank') return;
+        const href = anchor.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http')) return;
+        const url = new URL(anchor.href, location.href);
+        if (url.origin !== location.origin || url.pathname === location.pathname) return;
+        NProgress.start();
+      });
+      window.addEventListener('pageshow', () => NProgress.done());
+    </script>
+
     <script is:inline>
       // Theme toggle
       document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
