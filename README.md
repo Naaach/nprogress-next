@@ -27,8 +27,7 @@ NProgress.done()
 
 ## Status
 
-🚧 **Early development.** This repository is at the scaffolding stage — see the
-roadmap below for what's next.
+✅ **Ready for use.** All core features, React and Vue adapters, tests, CI, and examples are complete.
 
 | Fase | Scope                                                    | Status         |
 | ----- | -------------------------------------------------------- | -------------- |
@@ -36,17 +35,53 @@ roadmap below for what's next.
 | 1     | Core: TypeScript port + ESM/CJS/UMD build + types        | ✅ done        |
 | 2     | CSS variables + a11y + reduced-motion                    | ✅ done        |
 | 3     | React and Vue adapters                                   | ✅ done        |
-| 4     | Unit + visual tests, CI, Changesets                      | 🚧 in progress |
-| 5     | Docs, examples (vanilla/React/Vue/Astro), publish to npm | ⬜ planned     |
+| 4     | Unit + visual tests, CI, Changesets                      | ✅ done        |
+| 5     | Docs, examples (vanilla/React/Vue/Astro), publish to npm | ✅ done        |
 | 6     | Launch                                                   | ⬜ planned     |
 
-## Ecosystem (planned)
+## Ecosystem
 
 | Package                | Description                                              |
 | ---------------------- | -------------------------------------------------------- |
 | `nprogress-next`       | Core engine (framework-agnostic)                         |
 | `nprogress-next-react` | React adapter (`<ProgressBar />`, `useProgress()`)       |
 | `nprogress-next-vue`   | Vue adapter (`<ProgressBar />`, `useProgress()`, plugin) |
+
+## Migration from NProgress
+
+| Original | nprogress-next |
+|----------|----------------|
+| `import NProgress from 'nprogress'` | `import NProgress from 'nprogress-next'` |
+| `require('nprogress')` | `require('nprogress-next')` (returns singleton) |
+| `NProgress.configure({...})` | Same |
+| `NProgress.start()` | Same |
+| `NProgress.done()` | Same |
+| `NProgress.set(0.5)` | Same |
+| `NProgress.inc()` | Same |
+| `NProgress.trickle()` | Same (now `inc(trickleRate)` internally) |
+| `NProgress.promise(p)` | Same |
+| `NProgress.remove()` | Same |
+| `NProgress.status` | Same (now writable) |
+| `NProgress.settings` | Same (mutable) |
+| `NProgress.version` | Same |
+| `NProgress.getPositioningCSS()` | Same |
+| `import 'nprogress/nprogress.css'` | `import 'nprogress-next/styles.css'` OR auto-injected |
+| `new NProgress()` | `import { createProgress } from 'nprogress-next'; const p = createProgress()` |
+| — | `NProgress.subscribe(fn)` (new) |
+| — | `prefers-reduced-motion` respected automatically |
+| — | SSR-safe (no window access on import) |
+| — | `--np-color`, `--np-height`, `--np-z` CSS variables |
+
+## Examples
+
+| Example | Description |
+|---------|-------------|
+| [`examples/vanilla/`](./examples/vanilla/) | Plain HTML + CDN UMD global — zero build step |
+| [`examples/react/`](./examples/react/) | Vite + React 19 + TS — `<ProgressBar />` + `useProgress()` |
+| [`examples/vue/`](./examples/vue/) | Vite + Vue 3 + TS — plugin + `<ProgressBar />` + `useProgress()` |
+| [`examples/astro/`](./examples/astro/) | Astro 5 + React island + vanilla comparison |
+
+Each example runs with `pnpm install && pnpm dev` (vanilla: open `index.html` directly).
 
 ## Credit where it's due
 

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nprogress-next — Vanilla Example</title>
+  <style>
+    :root {
+      --np-color: #29d;
+    }
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+    }
+    h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+    .subtitle { color: #666; margin-bottom: 2rem; }
+    .controls { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    button {
+      padding: 0.625rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    button:hover { background: #f5f5f5; border-color: #ccc; }
+    button:active { background: #eee; }
+    .primary { background: #29d; color: #fff; border-color: #29d; }
+    .primary:hover { background: #238cc9; border-color: #238cc9; }
+    .instance-demo {
+      border-top: 1px solid #eee;
+      padding-top: 2rem;
+    }
+    .instance-controls { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    code { background: #f5f5f5; padding: 0.125rem 0.375rem; border-radius: 4px; font-size: 0.875rem; }
+    .note { font-size: 0.875rem; color: #666; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>nprogress-next <span class="subtitle">Vanilla (CDN/UMD) Example</span></h1>
+
+  <p>Loads <code>NProgressNext</code> global from <code>unpkg.com/nprogress-next@latest</code>.</p>
+
+  <div class="controls">
+    <button class="primary" onclick="demoStart()">Start</button>
+    <button onclick="demoSet()">Set 50%</button>
+    <button onclick="demoInc()">Increment</button>
+    <button onclick="demoDone()">Done</button>
+    <button onclick="demoRemove()">Remove</button>
+  </div>
+
+  <div class="instance-demo">
+    <h2>Second isolated instance via <code>createProgress()</code></h2>
+    <p>Custom color via <code>--np-color</code> on container.</p>
+    <div id="second-instance" style="--np-color: #e67e22; margin-bottom: 1rem;">
+      <div class="instance-controls">
+        <button onclick="secondStart()">Start</button>
+        <button onclick="secondSet()">Set 75%</button>
+        <button onclick="secondDone()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">Script uses <code>defer</code> so DOM is ready — SSR-safe.</p>
+
+  <!-- UMD global from CDN -->
+  <script defer src="https://unpkg.com/nprogress-next@latest"></script>
+  <script defer>
+    // Main singleton instance
+    const N = window.NProgressNext;
+
+    function demoStart() { N.start(); }
+    function demoSet() { N.set(0.5); }
+    function demoInc() { N.inc(); }
+    function demoDone() { N.done(); }
+    function demoRemove() { N.remove(); }
+
+    // Second isolated instance mounted in #second-instance
+    const second = N.createProgress({ parent: '#second-instance' });
+    window.secondStart = () => second.start();
+    window.secondSet = () => second.set(0.75);
+    window.secondDone = () => second.done();
+  </script>
+</body>
+</html>

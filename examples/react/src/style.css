@@ -1,0 +1,22 @@
+/* Demo layout only — ProgressBar styles are auto-injected via import 'nprogress-next-react/styles.css' */
+
+button:hover:not(:disabled) {
+  background: #f5f5f5;
+  border-color: #ccc;
+}
+
+button:active:not(:disabled) {
+  background: #eee;
+}
+
+button.primary:hover:not(:disabled) {
+  background: #238cc9;
+  border-color: #238cc9;
+}
+
+code {
+  background: #f5f5f5;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}

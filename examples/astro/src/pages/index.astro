@@ -1,0 +1,86 @@
+---
+import ProgressDemo from './components/ProgressDemo.tsx';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nprogress-next — Astro Example</title>
+    <script>
+      // Vanilla usage in Astro — load from CDN for comparison
+      // In production you'd use the npm package instead
+    </script>
+  </head>
+  <body>
+    <main class="main">
+      <h1 class="h1">
+        nprogress-next
+        <span class="subtitle">Astro Example</span>
+      </h1>
+      <p class="desc">
+        Using React adapter as an island (<code>client:load</code>) + vanilla comparison.
+      </p>
+
+      <section class="section">
+        <h2 class="h2">React Island: <code><ProgressBar client:load /></code></h2>
+        <ProgressDemo client:load />
+      </section>
+
+      <section class="section">
+        <h2 class="h2">Vanilla (inline script)</h2>
+        <p class="desc">
+          Loads <code>NProgressNext</code> from unpkg — no build step needed.
+        </p>
+        <div id="vanilla-demo" style="--np-color: #e67e22;">
+          <div class="controls">
+            <button class="button primary" onclick="vanillaStart()">Start</button>
+            <button class="button" onclick="vanillaSet()">Set 50%</button>
+            <button class="button" onclick="vanillaInc()">Increment</button>
+            <button class="button" onclick="vanillaDone()">Done</button>
+            <button class="button" onclick="vanillaRemove()">Remove</button>
+          </div>
+        </div>
+      </section>
+
+      <p class="note">
+        Both approaches work. React island for SPA-style navigation, vanilla for simple pages or SSR-first Astro.
+      </p>
+    </main>
+
+    <script is:inline>
+      // Vanilla demo using CDN
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/nprogress-next@latest';
+      script.defer = true;
+      script.onload = () => {
+        const N = window.NProgressNext;
+        const vanilla = N.createProgress({ parent: '#vanilla-demo' });
+        window.vanillaStart = () => vanilla.start();
+        window.vanillaSet = () => vanilla.set(0.5);
+        window.vanillaInc = () => vanilla.inc();
+        window.vanillaDone = () => vanilla.done();
+        window.vanillaRemove = () => vanilla.remove();
+      };
+      document.head.appendChild(script);
+    </script>
+
+    <style is:global>
+      .main { max-width: 720px; margin: 0 auto; padding: 2rem 1rem; font-family: system-ui, sans-serif; line-height: 1.6; }
+      .h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+      .subtitle { color: #666; font-weight: 400; }
+      .desc { margin-bottom: 1.5rem; color: #333; }
+      .section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid #eee; }
+      .h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+      .controls { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+      .button { padding: 0.625rem 1rem; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 0.9rem; transition: background 0.15s, border-color 0.15s; }
+      .button:hover { background: #f5f5f5; border-color: #ccc; }
+      .button:active { background: #eee; }
+      .primary { background: #29d; color: #fff; border-color: #29d; }
+      .primary:hover { background: #238cc9; border-color: #238cc9; }
+      .note { font-size: 0.875rem; color: #666; margin-top: 2rem; }
+      code { background: #f5f5f5; padding: 0.125rem 0.375rem; border-radius: 4px; font-size: 0.875rem; }
+    </style>
+  </body>
+</html>
