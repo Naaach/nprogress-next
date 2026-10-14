@@ -1,2 +1,2 @@
-export const site = 'https://docs.nprogress-next.dev';
+export const site = 'https://nprogress-next.nachodiaz.es';
 export const base = '/';
